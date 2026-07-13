@@ -105,11 +105,11 @@ describe('Array Operations', () => {
     });
 
     test("getHighPriorityTasks filters correctly", () => {
-        const tasks = [
-        new Task("Low", "", 1),
-        new Task("High", "", 3),
-        ];
-        const result = getHighPriorityTasks(tasks, 2);
+        addTask("Low", "", 1);
+        addTask("High", "", 3);
+
+        const result = getHighPriorityTasks(2);
+
         expect(result).toHaveLength(1);
         expect(result[0].title).toBe("High");
     });
