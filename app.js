@@ -135,6 +135,17 @@ export function getHighPriorityTasks(minPriority) {
     return taskList.filter((task) => task.priority > minPriority);
 }
 
+// Returns the single highest-priority task, or null if the list is empty.
+export function getTopPriorityTask() {
+    if (taskList.length === 0) {
+        return null;
+    }
+    const sortedByPriority = [...taskList].sort((a, b) => b.priority - a.priority);
+    const [topTask] = sortedByPriority; 
+    return topTask;
+}
+
+
 export function getTaskSummaries(tasks) {
     return tasks.map((task) => `${task.title} (priority ${task.priority})`);
 }
