@@ -150,3 +150,21 @@ describe("Destructuring / getTaskDetails", () => {
 });
 
 
+describe("utils.js helpers", () => {
+    test("isHighPriority returns a real boolean, not a string", () => {
+        const highTask = { priority: "high" };
+        const lowTask = { priority: "low" };
+        expect(isHighPriority(highTask)).toBe(true);
+        expect(isHighPriority(lowTask)).toBe(false);
+    });
+
+    test("generateRandomId returns an integer", () => {
+        const id = generateRandomId();
+        expect(Number.isInteger(id)).toBe(true);
+    });
+
+    test("formatTaskName trims and capitalizes", () => {
+        expect(formatTaskName("  buy milk  ")).toBe("Buy milk");
+        expect(formatTaskName("")).toBe("");
+    });
+});
