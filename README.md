@@ -11,7 +11,20 @@ is split into the following ES6 modules including a testing module:
 - `utils.js` — small helpers (storage, id generation, priority checks)
 - `app.js` — task-management logic and the `TaskManager` object
 - `dom.js` — all browser/DOM code; the only file that touches `document`
--`app.test.js`- all jest testing functions
+- `app.test.js` — Jest test suite
+
+## Errors Found
+The starter application contained more than 15 issues across the following categories:
+
+- **Variables & Operators:** Implicit global variables, incorrect use of `var`, misuse of assignment (`=`) and loose equality (`==`), and inconsistent variable declarations.
+- **Control Flow:** Off-by-one loop errors, infinite loops, missing recursion base cases, missing empty-array guards, and premature DOM initialization.
+- **Functions & Functional Programming:** Missing function parameters, reliance on global state, lack of higher-order functions, minimal use of array methods, and manual looping.
+- **Object-Oriented Programming:** Missing class properties and methods, incorrect inheritance (`super()`), and incomplete `TaskManager` functionality.
+- **Modern JavaScript (ES6+):** Missing template literals, destructuring, spread/rest operators, and ES6 module imports/exports.
+- **DOM Manipulation:** Incorrect selectors, missing null checks, duplicate rendering, improper event handling, and lack of event delegation.
+- **Data Persistence:** Incorrect `localStorage` handling due to missing `JSON.stringify()` and `JSON.parse()`.
+- **Testing:** Missing imports, insufficient test coverage, no test state reset, and lack of edge case testing.
+- **Error Handling & Code Quality:** Missing input validation, absence of `try...catch` blocks, and limited code documentation.
 
 ## Fixes Implemented
 
@@ -38,13 +51,26 @@ is split into the following ES6 modules including a testing module:
   id lookup to `data-*` attributes with event delegation on the task
   list container, and added JSON-aware `localStorage` save/load.
 - **Testing**: rewrote `app.test.js` with real imports, a `beforeEach`
-  reset, and 20+ passing tests covering every required category
+  reset, and 25 passing tests covering every required category
   (classes, inheritance, array ops, recursion, destructuring, edge cases,
   error handling).
 - **Error handling & quality**: added `try/catch` around storage and task
   creation, `typeof`/range validation on task inputs, and comments
   throughout explaining *why* each fix was needed, not just what changed.
 
+
+## Features Added
+
+- ES6 modules (`import`/`export`)
+- Template literals
+- Object and array destructuring
+- Spread and rest operators
+- Higher-order functions
+- Functional array methods (`map`, `filter`, `reduce`, `find`)
+- Event delegation
+- Recursive function with a base case
+- LocalStorage persistence using JSON
+- Comprehensive Jest test suite (25 passing tests)
 
 ## Getting Started
 
@@ -57,14 +83,35 @@ block module imports over the `file://` protocol):
 
 ## Testing
 
-Run Jest tests with:
+Install dependencies:
+
+```bash
+npm install
 ```
+
+Run the test suite:
+
+```bash
 npm test
 ```
 
-All tests should pass with 0 failures.
+Expected result:
+
+- 25 tests passing
+- 0 test failures
 
 ## Screenshots
 
+![Application Running in Browser](screenshots/app.png)
+
+![Console Showing No Errors](screenshots/console.png)
+
+![Jest Test Results](screenshots/tests.png)
+
+![DOM Manipulation Features Working](screenshots/dom.png)
 
 ## Reflection
+
+The most challenging part of this project was debugging the existing code while ensuring every change still met the project requirements. Identifying hidden issues such as infinite loops, recursion without a base case, and incorrect inheritance required careful testing and debugging.
+
+This project strengthened my understanding of modern JavaScript, ES6 modules, object-oriented programming, functional programming, DOM manipulation, and unit testing with Jest especially. It also reinforced the importance of writing clean, maintainable, and well-tested code.
