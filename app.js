@@ -104,6 +104,12 @@ export function createTaskBatch(...taskInputs) {
     );
 }
 
+export function createPriorityFilter(minPriority) {
+    return function (task) {
+        return task.priority >= minPriority;
+    };
+}
+
 export function countCompletedTasks(tasks, index = 0) {
     if (!Array.isArray(tasks)) {
         return 0;
@@ -117,7 +123,7 @@ export function countCompletedTasks(tasks, index = 0) {
 }
 
 
-function calculateAveragePriority() {
+export function calculateAveragePriority() {
     if (taskList.length === 0) {
         return 0;
     }
@@ -144,10 +150,15 @@ export const TaskManager = {
         return this.tasks.length;
     },
 
-    
-    // Missing: method to add task using functional approach
-    // Missing: method using array methods (map, filter, reduce)
+    getCompletedCount() {
+        return this.tasks.filter((task) => task.completed).length;
+    },
 
+    // Missing: method to add task using functional approach
+
+    getTasksByPriority(priority) {
+        return this.tasks.filter((task) => task.priority === priority);
+    },
 };
 
 export function resetTasks() {
