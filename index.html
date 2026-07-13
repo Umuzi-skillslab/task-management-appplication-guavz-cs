@@ -12,25 +12,25 @@
         
         <div class="add-task-section">
             <h2>Add New Task</h2>
-            <!-- Form with issues -->
             <input type="text" id="title" placeholder="Task Title">
             <input type="text" id="description" placeholder="Description">
-            <!-- Missing: priority input -->
+             <select id="priority">
+                <option value="1">Low</option>
+                <option value="2">Medium</option>
+                <option value="3">High</option>
+            </select>
             <button class="add-task-btn">Add Task</button>
         </div>
         
         <div class="task-list" id="task-list">
-            <!-- Tasks will be displayed here -->
+            <!-- Tasks will be displayed here by dom.js -->
         </div>
         
         <div class="statistics">
-            <!-- Missing: statistics display -->
+            <!-- Missing: statistics display by dom.js-->
         </div>
     </div>
     
-    <!-- Scripts loaded in wrong order -->
-    <script src="dom.js"></script>
-    <script src="app.js"></script>
-    <!-- Missing: module script -->
+    <script type="module" src="dom.js"></script>
 </body>
 </html>

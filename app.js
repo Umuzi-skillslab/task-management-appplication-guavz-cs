@@ -1,156 +1,181 @@
-// Task Management Application - Starter Code with Errors
+import { isHighPriority, generateRandomId } from "./utils.js";
 
-// Global variables (scoping issues)
-taskList = [];  // Missing var/let/const
-var taskCounter = 0;  // Should use let or const
+//taskList had no let/const/var at all, which silently created an implicit global variable and taskCounter used var. Both now declared properly.
+export let taskList = [];
+export let taskCounter = 0;
 
-// Task class with errors
-class Task {
+export class Task {
     constructor(title, description, priority) {
+        if (typeof title !== "string" || title.trim().length === 0) {
+            throw new TypeError("Task title must be a non-empty string");
+        }
+
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.completed = false;
-        // Missing: id property
+        this.id = generateRandomId();
     }
     
-    // Missing: method to toggle completion
+    toggleCompletion() {
+        this.completed = !this.completed;
+        return this.completed;
+    }
     
     getInfo() {
-        // Wrong string concatenation - should use template literals
-        return "Task: " + this.title + " - Priority: " + this.priority;
+        return `Task: ${this.title} - Priority: ${this.priority}`;
     }
 }
 
-// Subtask class with inheritance issues
-class SubTask extends Task {
+export class SubTask extends Task {
     constructor(title, description, priority, parentTask) {
-        // Missing: super() call
+        super(title, description, priority);
         this.parentTask = parentTask;
     }
-}
 
-// Functions with errors
-
-// Function with no error handling
-function addTask(title, description, priority) {
-    var newTask = new Task(title, description, priority);  // Should use const
-    taskList.push(newTask);
-    taskCounter++;
-    return newTask;
-}
-
-// Function with incorrect loop
-function displayAllTasks() {
-    // Wrong loop - should use for-of
-    for (var i = 0; i <= taskList.length; i++) {  // Off-by-one error
-        console.log(taskList[i].title);
+    getInfo() {
+        const parentTitle = this.parentTask ? this.parentTask.title : "none";
+        return `${super.getInfo()} - Subtask of: ${parentTitle}`;
     }
 }
 
-// Function missing parameter
-function findTaskByTitle() {
-    // Missing: title parameter
-    // Wrong loop construct
-    var i = 0;
-    while (i < taskList.length) {
-        if (taskList[i].title == title) {  // Should use ===
-            return taskList[i];
+//added error handling and type checking for title and priority parameters.
+export function addTask(title, description, priority) {
+    try {
+        if (typeof title !== "string") {
+            throw new TypeError("title must be a string");
         }
-        // Missing: i++
-    }
-    return undefined;
-}
-
-// Function with type checking issues
-function updateTaskPriority(taskId, newPriority) {
-    // Missing: typeof check for parameters
-    // Missing: null/undefined validation
-    
-    for (var i = 0; i < taskList.length; i++) {
-        if (taskList[i].id = taskId) {  // Wrong operator (= instead of ===)
-            taskList[i].priority = newPriority;
-            return true;
+        if (typeof priority !== "number" || priority < 1 || priority > 3) {
+            throw new TypeError("priority must be a number between 1 and 3");
         }
+
+        const newTask = new Task(title, description, priority);
+        taskList.push(newTask);
+        taskCounter++;
+        return newTask;
+    } catch (error) {
+        console.error("addTask failed:", error.message);
+        return null;
     }
-    return false;
 }
 
-// Function that should use destructuring but doesn't
-function getTaskDetails(task) {
-    // Should destructure task properties
-    var title = task.title;
-    var description = task.description;
-    var priority = task.priority;
-    var completed = task.completed;
-    
-    return {
-        title: title,
-        description: description,
-        priority: priority,
-        completed: completed
+export function displayAllTasks() {
+    for (const task of taskList) {
+        console.log(task.getInfo());
+    }
+}
+
+export function findTaskByTitle(title) {
+    if (typeof title !== "string") {
+        return undefined;
+    }
+    return taskList.find((task) => task.title === title);
+}
+
+
+export function updateTaskPriority(taskId, newPriority) {
+    if (typeof taskId !== "number" || typeof newPriority !== "number") {
+        console.error("updateTaskPriority: taskId and newPriority must be numbers");
+        return false;
+    }
+
+    const task = taskList.find((t) => t.id === taskId);
+    if (!task) {
+        return false;
+    }
+    task.priority = newPriority;
+    return true;
+}
+
+
+export function getTaskDetails(task) {
+    const { title, description, priority, completed } = task;
+    return { title, description, priority, completed };
+}
+
+
+export function mergeTasks(list1, list2) {
+    return [...list1, ...list2];
+}
+
+export function createTaskBatch(...taskInputs) {
+    return taskInputs.map(({ title, description, priority }) =>
+        new Task(title, description, priority)
+    );
+}
+
+export function createPriorityFilter(minPriority) {
+    return function (task) {
+        return task.priority >= minPriority;
     };
 }
 
-// Function missing spread/rest operators
-function mergeTasks(list1, list2) {
-    // Should use spread operator
-    var merged = [];
-    for (var i = 0; i < list1.length; i++) {
-        merged.push(list1[i]);
+export function countCompletedTasks(tasks, index = 0) {
+    if (!Array.isArray(tasks)) {
+        return 0;
     }
-    for (var i = 0; i < list2.length; i++) {
-        merged.push(list2[i]);
+    if (index >= tasks.length) {
+        return 0;
     }
-    return merged;
+
+    const currentCount = tasks[index].completed ? 1 : 0;
+    return currentCount + countCompletedTasks(tasks, index + 1);
 }
 
-// Recursive function with error
-function countCompletedTasks(tasks, index) {
-    // Missing: base case check
-    // Missing: null/undefined check
-    
-    if (tasks[index].completed) {
-        return 1 + countCompletedTasks(tasks, index + 1);
-    } else {
-        return countCompletedTasks(tasks, index + 1);
+
+export function calculateAveragePriority() {
+    if (taskList.length === 0) {
+        return 0;
     }
+    const total = taskList.reduce((sum, task) => sum + task.priority, 0);
+    return Math.round((total / taskList.length) * 100) / 100;
 }
 
-// Function with Math object issues
-function calculateAveragePriority() {
-    var total = 0;
-    // Missing: check for empty array
-    for (var i = 0; i < taskList.length; i++) {
-        total = total + taskList[i].priority;
-    }
-    // Should use Math.round or toFixed
-    return total / taskList.length;
+export function getHighPriorityTasks(minPriority) {
+    return taskList.filter((task) => task.priority > minPriority);
 }
 
-// Filter function with errors
-function getHighPriorityTasks(minPriority) {
-    var highPriority = [];
-    // Should use array methods (filter)
-    for (var i = 0; i < taskList.length; i++) {
-        if (taskList[i].priority > minPriority) {
-            highPriority.push(taskList[i]);
-        }
+// Returns the single highest-priority task, or null if the list is empty.
+export function getTopPriorityTask() {
+    if (taskList.length === 0) {
+        return null;
     }
-    return highPriority;
+    const sortedByPriority = [...taskList].sort((a, b) => b.priority - a.priority);
+    const [topTask] = sortedByPriority; 
+    return topTask;
 }
 
-// Object with missing methods
-var TaskManager = {
-    tasks: taskList,
-    
-    // Missing: method to add task using functional approach
-    // Missing: method using array methods (map, filter, reduce)
-    
-    getTotalTasks: function() {
+
+export function getTaskSummaries(tasks) {
+    return tasks.map((task) => `${task.title} (priority ${task.priority})`);
+}
+
+
+
+export const TaskManager = {
+    get tasks() {
+        return taskList;
+    },
+
+    getTotalTasks() {
         return this.tasks.length;
-    }
+    },
+
+    getCompletedCount() {
+        return this.tasks.filter((task) => task.completed).length;
+    },
+
+    addNewTask(title, description, priority) {
+        return addTask(title, description, priority);
+    },
+
+    getTasksByPriority(priority) {
+        return this.tasks.filter((task) => task.priority === priority);
+    },
 };
 
-// Export issues - should be a module
-// Missing: proper module exports
+export function resetTasks() {
+    taskList = [];
+    taskCounter = 0;
+}
+
