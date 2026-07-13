@@ -1,7 +1,9 @@
 import { saveToStorage, loadFromStorage, formatTaskName } from "./utils.js";
 import { taskList, addTask, getTaskSummaries, TaskManager } from "./app.js";
 
-
+// Wires up every interactive element on the page: adding tasks (click and
+// Enter-key), toggling/deleting tasks via delegation, and clearing completed
+// tasks. Bails out early if the required elements aren't on the page.
 export function setupEventListeners() {
     const addButton = document.querySelector(".add-task-btn");
     const titleInput = document.querySelector("#title");
@@ -15,21 +17,16 @@ export function setupEventListeners() {
 
     addButton.addEventListener("click", handleAddTask);
 
-    if (titleInput) {
-        titleInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            handleAddTask();
+    const enterSubmitInputs = [titleInput, descInput];
+    for (const input of enterSubmitInputs) {
+        if (input) {
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleAddTask();
+                }
+            });
         }
-        });
-    }
-    if (descInput) {
-        descInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            handleAddTask();
-        }
-        });
     }
 
     taskListContainer.addEventListener("click", handleTaskClick);
@@ -40,6 +37,8 @@ export function setupEventListeners() {
     }
 }
 
+// Reads the form inputs, validates/formats them, and hands off to addTask().
+// Re-renders and clears the inputs only if the task was actually created.
 function handleAddTask() {
     const titleInput = document.querySelector("#title");
     const descInput = document.querySelector("#description");
@@ -99,7 +98,9 @@ export function displayTasks() {
     renderStatistics();
 }
 
-
+// Handles clicks anywhere inside the task list container. closest() finds
+// the button that was actually clicked (or its child), so it doesn't matter
+// which element inside the button received the click event.
 export function handleTaskClick(event) {
     const button = event.target.closest("button[data-task-id]");
     if (!button) {
