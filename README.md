@@ -1,52 +1,59 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=24124904&assignment_repo_type=AssignmentRepo)
-# Task Manager - JavaScript Starter Code
+# Task Manager - Capstone 2 
 
-This is the starter codebase for your JavaScript task management application. The code is approximately 70% complete but contains errors, omissions, and areas that need significant improvement.
+## Overview
 
-## What's Included
+The app lets you add tasks with a title, description and priority, mark
+them complete, delete them, and see a running completed/total count. Data
+persists to `localStorage` so tasks survive a page refresh. The codebase
+is split into the following ES6 modules including a testing module:
 
-- `app.js` - Core application logic (incomplete with errors)
-- `dom.js` - DOM manipulation code (incomplete with errors)
-- `index.html` - HTML structure (incomplete)
-- `app.test.js` - Jest tests (incomplete)
-- `package.json` - Project configuration
+- `utils.js` — small helpers (storage, id generation, priority checks)
+- `app.js` — task-management logic and the `TaskManager` object
+- `dom.js` — all browser/DOM code; the only file that touches `document`
+-`app.test.js`- all jest testing functions
 
-## Errors and Omissions
+## Fixes Implemented
 
-The starter code contains intentional errors and missing features across all JavaScript topics including:
+- **Variables & operators**: all `var` replaced with `let`/`const`; the
+  implicit global `taskList` now has a proper `let` declaration; every
+  `==` and stray `=` inside a condition replaced with `===`.
+- **Control flow**: fixed the off-by-one `for` loop and the infinite
+  `while` loop; added a real base case to the recursive
+  `countCompletedTasks`; guarded `calculateAveragePriority` against an
+  empty array; wrapped DOM setup in `DOMContentLoaded`.
+- **Functions & functional programming**: added the missing `title`
+  parameter to `findTaskByTitle`; replaced manual loops with `map`,
+  `filter`, `reduce`, `find`, `some`, and `every`; added a higher-order
+  function.
+- **OOP**: `Task` now has an `id` and `toggleCompletion()`; `SubTask`
+  correctly calls `super()` before using `this`; `TaskManager` gained two
+  new methods and a getter so its `tasks` list can never go stale.
+- **Modern JavaScript**: added object and function-parameter
+  destructuring, template literals everywhere string concatenation used
+  to be, the spread operator (`mergeTasks`, array copies), a rest
+  parameter, and ES6 `import`/`export` across all four modules.
+- **DOM**: corrected the selector bugs, added null checks, cleared the
+  container before re-rendering (fixing duplicate tasks), switched task
+  id lookup to `data-*` attributes with event delegation on the task
+  list container, and added JSON-aware `localStorage` save/load.
+- **Testing**: rewrote `app.test.js` with real imports, a `beforeEach`
+  reset, and 20+ passing tests covering every required category
+  (classes, inheritance, array ops, recursion, destructuring, edge cases,
+  error handling).
+- **Error handling & quality**: added `try/catch` around storage and task
+  creation, `typeof`/range validation on task inputs, and comments
+  throughout explaining *why* each fix was needed, not just what changed.
 
-- Variable scoping issues (var vs let vs const)
-- Missing error handling (try-catch blocks)
-- Incorrect operators and comparisons
-- Loop errors (for, while, for-of)
-- Missing array and object destructuring
-- No spread/rest operators
-- Missing template literals
-- Class and inheritance issues
-- Missing functional programming approaches
-- DOM selector errors
-- Event handling problems
-- Missing JSON operations
-- Incomplete Jest tests
-- Missing module exports/imports
-
-## Your Task
-
-1. Review all code files carefully
-2. Identify and fix all errors
-3. Complete all missing requirements
-4. Add proper error handling
-5. Implement modern JavaScript features
-6. Write comprehensive tests
-7. Ensure code follows best practices
 
 ## Getting Started
 
+Because the app uses real ES6 modules (`<script type="module">`), open it
+through a local server rather than double-clicking `index.html` (browsers
+block module imports over the `file://` protocol):
+
 1. Install dependencies: `npm install`
-2. Review all JavaScript files
-3. Run tests: `npm test` (they will fail initially)
-4. Fix errors and complete missing features
-5. Re-run tests until all pass
+2. Right-click on the `index.html` file then run it on the live server, this should open the app on your browser.
 
 ## Testing
 
@@ -55,6 +62,9 @@ Run Jest tests with:
 npm test
 ```
 
-Initially, tests will fail or be incomplete. Fix the code and add missing tests.
+All tests should pass with 0 failures.
 
-Good luck!
+## Screenshots
+
+
+## Reflection
