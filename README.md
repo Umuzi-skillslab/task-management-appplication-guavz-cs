@@ -102,12 +102,16 @@ Expected result:
 
 ## Screenshots
 
+Application Running in Browser
 ![Application Running in Browser](screenshots/app.png)
 
+Console Showing No Errors
 ![Console Showing No Errors](screenshots/console.png)
 
+Jest Test Results
 ![Jest Test Results](screenshots/tests.png)
 
+DOM Manipulation Features Working
 ![DOM Manipulation Features Working](screenshots/dom.png)
 
 ## Reflection
