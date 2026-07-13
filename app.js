@@ -131,8 +131,8 @@ export function calculateAveragePriority() {
     return Math.round((total / taskList.length) * 100) / 100;
 }
 
-export function getHighPriorityTasks(tasks, minPriority) {
-    return tasks.filter((task) => task.priority > minPriority);
+export function getHighPriorityTasks(minPriority) {
+    return taskList.filter((task) => task.priority > minPriority);
 }
 
 export function getTaskSummaries(tasks) {
@@ -154,7 +154,9 @@ export const TaskManager = {
         return this.tasks.filter((task) => task.completed).length;
     },
 
-    // Missing: method to add task using functional approach
+    addNewTask(title, description, priority) {
+        return addTask(title, description, priority);
+    },
 
     getTasksByPriority(priority) {
         return this.tasks.filter((task) => task.priority === priority);
