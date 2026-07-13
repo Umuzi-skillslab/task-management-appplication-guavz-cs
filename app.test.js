@@ -1,4 +1,4 @@
-import { Task, SubTask, taskList, addTask, findTaskByTitle, updateTaskPriority, getTaskDetails, mergeTasks, countCompletedTasks, calculateAveragePriority, getHighPriorityTasks, TaskManager, resetTasks } from './app.js';
+import { Task, SubTask, taskList, addTask, findTaskByTitle, updateTaskPriority, getTaskDetails, mergeTasks, countCompletedTasks, calculateAveragePriority, getHighPriorityTasks, createPriorityFilter, TaskManager, resetTasks } from './app.js';
 
 import { isHighPriority, generateRandomId, formatTaskName } from './utils.js';
 
@@ -78,8 +78,20 @@ describe('Task Functions', () => {
         expect(updateTaskPriority(99999, 3)).toBe(false);
     });
 
-    // Missing: test for calculateAveragePriority
-    // Missing: test for error handling
+    test("returns 0 for an empty task list (edge case)", () => {
+        expect(calculateAveragePriority()).toBe(0);
+    });
+ 
+    test("computes the correct average across added tasks", () => {
+        addTask("A", "", 1);
+        addTask("B", "", 3);
+        expect(calculateAveragePriority()).toBe(2);
+    });
+
+    test("updateTaskPriority rejects non-numeric arguments (error handling)", () => {
+        expect(updateTaskPriority("abc", 3)).toBe(false);
+        expect(updateTaskPriority(1, "high")).toBe(false);
+    });
 });
 
 describe('Array Operations', () => {
